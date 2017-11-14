@@ -4,7 +4,7 @@
     <string name="magicbill_name">매직빌</string>
     <string name="ulma_name">얼마에요</string>
     <string name="ulmaerp_name">얼마에요 ERP</string>
-    <string name="magicbill_price">\\9,000</string>
-    <string name="ulma_price">\\32,000</string>
-    <string name="ulmaerp_price">\\39,000</string>
+    <string name="magicbill_price">9,000원</string>
+    <string name="ulma_price">32,000원</string>
+    <string name="ulmaerp_price">39,000원</string>
 </resources>

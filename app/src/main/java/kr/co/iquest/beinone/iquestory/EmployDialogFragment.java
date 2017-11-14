@@ -1,6 +1,5 @@
 package kr.co.iquest.beinone.iquestory;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,18 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import kr.co.iquest.beinone.iquestory.model.Counselor;
+import kr.co.iquest.beinone.iquestory.model.Designer;
+import kr.co.iquest.beinone.iquestory.model.Developer;
+import kr.co.iquest.beinone.iquestory.model.Employee;
+
 /**
  * Created by BeINone on 2017-11-13.
  */
 
 public class EmployDialogFragment extends DialogFragment {
 
-    public static EmployDialogFragment newInstance(Product product) {
-        Bundle args = new Bundle();
-        args.putParcelable("product", product);
+    private EmployCallback mEmployCallback;
 
+    public static EmployDialogFragment newInstance(EmployCallback callback) {
         EmployDialogFragment fragment = new EmployDialogFragment();
-        fragment.setArguments(args);
+        fragment.mEmployCallback = callback;
         return fragment;
     }
 
@@ -32,40 +35,68 @@ public class EmployDialogFragment extends DialogFragment {
 
         EmployeeCardView developerCV = rootView.findViewById(R.id.cv_dialog_employ_developer);
         EmployeeCardView designerCV = rootView.findViewById(R.id.cv_dialog_employ_designer);
-        EmployeeCardView CounselorCV = rootView.findViewById(R.id.cv_dialog_employ_counselor);
+        EmployeeCardView counselorCV = rootView.findViewById(R.id.cv_dialog_employ_counselor);
+
+        developerCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getContext())
+                        .setMessage("개발자를 고용하시겠습니까?")
+                        .setPositiveButton("고용", new OnPositiveButtonClickListener(new Developer()))
+                        .setNegativeButton("취소", mOnNegativeButtonClickListener)
+                        .create()
+                        .show();
+            }
+        });
+
+        designerCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getContext())
+                        .setMessage("디자이너를 고용하시겠습니까?")
+                        .setPositiveButton("고용", new OnPositiveButtonClickListener(new Designer()))
+                        .setNegativeButton("취소", mOnNegativeButtonClickListener)
+                        .create()
+                        .show();
+            }
+        });
+
+        counselorCV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getContext())
+                        .setMessage("상담원을 고용하시겠습니까?")
+                        .setPositiveButton("고용", new OnPositiveButtonClickListener(new Counselor()))
+                        .setNegativeButton("취소", mOnNegativeButtonClickListener)
+                        .create()
+                        .show();
+            }
+        });
 
         return rootView;
     }
 
-    private View.OnClickListener employeeClickListener = new View.OnClickListener() {
+    private DialogInterface.OnClickListener mOnNegativeButtonClickListener = new DialogInterface.OnClickListener() {
         @Override
-        public void onClick(View view) {
-            EmployeeCardView employeeCV = (EmployeeCardView) view;
-            Employee employee = employeeCV.getEmployee();
-            if (employee != null) {
-                if (employee instanceof Developer) {
-                    new AlertDialog.Builder(getContext())
-                            .setMessage("개발자를 고용하시겠습니까?")
-                            .setPositiveButton("고용", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            })
-                            .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            })
-                            .create()
-                            .show();
-                } else if (employee instanceof Designer) {
-
-                } else if (employee instanceof Counselor) {
-
-                }
-            }
+        public void onClick(DialogInterface dialogInterface, int i) {
+            dialogInterface.dismiss();
         }
     };
+
+    private class OnPositiveButtonClickListener implements DialogInterface.OnClickListener {
+        private Employee mEmployee;
+
+        public OnPositiveButtonClickListener(Employee employee) {
+            mEmployee = employee;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            mEmployCallback.employ(mEmployee);
+        }
+    };
+
+    public interface EmployCallback {
+        void employ(Employee employee);
+    }
 }

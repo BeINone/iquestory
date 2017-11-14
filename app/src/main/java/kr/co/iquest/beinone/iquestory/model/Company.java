@@ -1,5 +1,6 @@
-package kr.co.iquest.beinone.iquestory;
+package kr.co.iquest.beinone.iquestory.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,6 +13,17 @@ public class Company {
     private int dept;
     private List<Product> products;
     private List<Employee> employees;
+    private OnAssetChangedListener onAssetChangedListener;
+
+    public Company(OnAssetChangedListener listener) {
+        products = new ArrayList<>();
+        employees = new ArrayList<>();
+        onAssetChangedListener = listener;
+    }
+
+    public void employ(Employee employee) {
+        employees.add(employee);
+    }
 
     public void paySalary() {
         int totalSalary = 0;
@@ -23,7 +35,7 @@ public class Company {
             }
         }
 
-        asset -= totalSalary;
+        setAsset(asset - totalSalary);
     }
 
     public void receiveSales() {
@@ -34,7 +46,7 @@ public class Company {
             }
         }
 
-        asset += totalSales;
+        setAsset(asset + totalSales);
     }
 
     public int getAsset() {
@@ -43,6 +55,7 @@ public class Company {
 
     public void setAsset(int asset) {
         this.asset = asset;
+        onAssetChangedListener.onAssetChanged(this.asset);
     }
 
     public int getDept() {
@@ -67,5 +80,9 @@ public class Company {
 
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
+    }
+
+    public interface OnAssetChangedListener {
+        void onAssetChanged(int asset);
     }
 }

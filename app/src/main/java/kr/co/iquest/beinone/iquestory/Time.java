@@ -32,7 +32,7 @@ public class Time {
             realTime = 0;
             if (month == MAX_MONTH) {
                 year += 1;
-                year = 0;
+                month = 0;
             }
             mHandler.post(new Runnable() {
                 @Override

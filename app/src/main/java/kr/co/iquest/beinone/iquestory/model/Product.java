@@ -1,4 +1,4 @@
-package kr.co.iquest.beinone.iquestory;
+package kr.co.iquest.beinone.iquestory.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,10 +15,13 @@ public class Product implements Parcelable {
     private double incrementRate;
     private double decrementRate;
     private Popularity popularity;
+    private OnProductDataChangedListener onProductDataChangedListener;
 
-    public Product(String name, int price) {
+    public Product(String name, int price, OnProductDataChangedListener listener) {
         this.name = name;
         this.price = price;
+        this.popularity = new HoldingPopularity();
+        this.onProductDataChangedListener = listener;
     }
 
     public Product(Parcel parcel) {
@@ -45,6 +48,18 @@ public class Product implements Parcelable {
         parcel.writeParcelable(popularity, 1);
     }
 
+    public void changeNumCustomer() {
+        popularity.changeNumCustomer(this);
+    }
+
+    public void increaseNumCustomer(int numCustomer) {
+        setNumCustomer(this.numCustomer += numCustomer);
+    }
+
+    public void decreaseNumCustomer(int numCustomer) {
+        setNumCustomer(this.numCustomer -= numCustomer);
+    }
+
     public String getName() {
         return name;
     }
@@ -67,6 +82,7 @@ public class Product implements Parcelable {
 
     public void setNumCustomer(int numCustomer) {
         this.numCustomer = numCustomer;
+        onProductDataChangedListener.onNumCustomerChanged(this.numCustomer);
     }
 
     public double getIncrementRate() {
@@ -91,6 +107,7 @@ public class Product implements Parcelable {
 
     public void setPopularity(Popularity popularity) {
         this.popularity = popularity;
+        onProductDataChangedListener.onPopularityChanged(this.popularity);
     }
 
     private Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
@@ -104,4 +121,9 @@ public class Product implements Parcelable {
             return new Product[i];
         }
     };
+
+    public interface OnProductDataChangedListener {
+        void onNumCustomerChanged(int numCustomer);
+        void onPopularityChanged(Popularity popularity);
+    }
 }

@@ -1,25 +1,30 @@
-package kr.co.iquest.beinone.iquestory;
+package kr.co.iquest.beinone.iquestory.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Random;
 
 /**
  * Created by BeINone on 2017-11-12.
  */
 
-public class IncrementPopularity implements Popularity {
+public class DecrementPopularity implements Popularity {
 
-    public IncrementPopularity() {
+    public DecrementPopularity() {
 
     }
 
-    public IncrementPopularity(Parcel parcel) {
+    public DecrementPopularity(Parcel parcel) {
 
     }
 
     @Override
     public void changeNumCustomer(Product product) {
+        Random random = new Random(System.currentTimeMillis());
+        int decreasingNumCustomer = random.nextInt(500);
 
+        product.decreaseNumCustomer(decreasingNumCustomer);
     }
 
     @Override
@@ -35,7 +40,7 @@ public class IncrementPopularity implements Popularity {
     private Parcelable.Creator<Popularity> CREATOR = new Creator<Popularity>() {
         @Override
         public Popularity createFromParcel(Parcel parcel) {
-            return new IncrementPopularity(parcel);
+            return new DecrementPopularity(parcel);
         }
 
         @Override

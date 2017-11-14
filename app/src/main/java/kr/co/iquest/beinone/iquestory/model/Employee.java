@@ -1,4 +1,4 @@
-package kr.co.iquest.beinone.iquestory;
+package kr.co.iquest.beinone.iquestory.model;
 
 /**
  * Created by BeINone on 2017-11-12.
@@ -11,6 +11,10 @@ public class Employee {
     private int numFault;
     private int workMonth;
     private Product ownProduct;
+
+    public Employee() {
+
+    }
 
     public Employee(Product product) {
         ownProduct = product;

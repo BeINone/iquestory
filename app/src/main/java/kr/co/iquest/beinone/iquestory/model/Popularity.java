@@ -1,4 +1,4 @@
-package kr.co.iquest.beinone.iquestory;
+package kr.co.iquest.beinone.iquestory.model;
 
 import android.os.Parcelable;
 
