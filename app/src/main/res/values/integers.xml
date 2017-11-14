@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="magicbill_price">9000</integer>
+    <integer name="ulma_price">32000</integer>
+    <integer name="ulmaerp_price">39000</integer>
+</resources>
